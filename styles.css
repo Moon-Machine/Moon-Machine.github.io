@@ -72,7 +72,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .page {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 28px;
+  padding: 12px 28px 28px;
   display: flex;
   flex-direction: column;
   gap: var(--space-400);
@@ -90,7 +90,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--space-600) var(--space-300) var(--space-400);
+  padding: var(--space-200) var(--space-300);
 }
 .logo {
   width: 32px; height: 32px;
@@ -193,13 +193,19 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .royalty-row.is-active .royalty-row__icon { color: var(--row-color, var(--brand-500)); }
 
 /* ---------- hero media / chrome card ---------- */
-.hero__media {
+.hero__media-wrap {
   position: relative;
   flex: 0 0 483px;
+  min-height: 702px;
+  display: flex;
+}
+.hero__media {
+  position: relative;
+  flex: 1 1 auto;
   border-radius: var(--radius-400);
+  border-bottom-right-radius: 100px;
   overflow: hidden;
   background: #1a1a1a;
-  min-height: 702px;
 }
 /* cross-fading background photos — one per royalty type */
 .hero-bg {
@@ -276,12 +282,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* the button sits in a white tab carved into the bottom-right corner */
 .chart-cta {
   position: absolute;
-  right: -1px;
-  bottom: -1px;
+  right: 0;
+  bottom: 0;
   z-index: 4;
   background: var(--white);
   padding: var(--space-400);
   border-top-left-radius: var(--radius-400);
+  border-bottom-right-radius: var(--radius-400);
+}
+.chart-cta .btn-brand {
+  box-shadow: 0 6px 22px rgba(255, 88, 42, 0.35);
 }
 .chart-cta::before,
 .chart-cta::after {
@@ -476,7 +486,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
    ============================================================ */
 @media (max-width: 1024px) {
   .hero { flex-direction: column; }
-  .hero__media { flex-basis: auto; min-height: 520px; }
+  .hero__media-wrap { flex-basis: auto; min-height: 520px; }
   .hero__left { padding: var(--space-400); }
   .lede { max-width: none; }
 }
@@ -486,9 +496,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .royalty-row__label, .estimate-row__label { font-size: 17px; }
   .estimate-row { flex-wrap: wrap; }
   .estimate-row__amount { font-size: 20px; }
-  .hero__media { min-height: 420px; }
+  .hero__media-wrap { min-height: 420px; flex-direction: column; }
   .glass { right: var(--space-400); }
   .chart-cta { position: static; margin: var(--space-400); align-self: flex-start; }
+  .chart-cta::before, .chart-cta::after { display: none; }
   .display { font-size: 34px; }
 }
 
