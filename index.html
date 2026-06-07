@@ -172,10 +172,11 @@
     <!-- Early access -->
     <section class="early" id="early-access" aria-labelledby="early-title">
       <h2 id="early-title" class="display display--center">Early Access</h2>
-      <form class="early__form" onsubmit="return false">
-        <input class="input input--pill" type="email" placeholder="Email" aria-label="Email" />
+      <form class="early__form" id="waitlist-form" novalidate>
+        <input class="input input--pill" type="email" name="email" id="waitlist-email" placeholder="Email" aria-label="Email" autocomplete="email" required />
         <button class="btn btn-brand btn-lg" type="submit">Join the Waitlist</button>
       </form>
+      <p class="early__status" id="waitlist-status" role="status" aria-live="polite"></p>
       <p class="fineprint">
         Moon Machine · Estimates are illustrative and based on industry-average royalty rates. Actual earnings vary by territory, platform mix, and registration.
       </p>

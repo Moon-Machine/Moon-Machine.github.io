@@ -371,6 +371,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
   scroll-margin-top: 28px;
 }
 .early__form { display: flex; flex-direction: column; align-items: center; gap: var(--space-400); width: 100%; }
+.early__status {
+  margin-top: -12px;
+  min-height: 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.early__status.is-ok { color: var(--green-500); }
+.early__status.is-error { color: var(--brand-600); }
+
 .fineprint {
   font-size: 12px;
   line-height: 1.5;

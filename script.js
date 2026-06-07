@@ -71,3 +71,59 @@
   // Leaving the group keeps the last selected type — no revert.
   activate(defaultRow);
 })();
+
+// Waitlist signup → Google Apps Script web app (appends to a Google Sheet).
+// Paste the deployed web-app URL between the quotes below.
+var WAITLIST_ENDPOINT = "https://script.google.com/macros/s/AKfycbwPXaAlWNYMLcSE2u-B-xljxBWc9QZsTb_mWHidOZv7pxmQAtXlIfZM33hXozgYfOxj/exec";
+
+(function () {
+  "use strict";
+
+  var form = document.getElementById("waitlist-form");
+  if (!form) return;
+  var input = document.getElementById("waitlist-email");
+  var status = document.getElementById("waitlist-status");
+  var button = form.querySelector("button[type=submit]");
+
+  function setStatus(msg, kind) {
+    status.textContent = msg;
+    status.className = "early__status" + (kind ? " is-" + kind : "");
+  }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var email = (input.value || "").trim();
+
+    if (!email || !input.checkValidity()) {
+      setStatus("Please enter a valid email address.", "error");
+      input.focus();
+      return;
+    }
+
+    if (!WAITLIST_ENDPOINT) {
+      setStatus("Thanks! (Waitlist isn't connected yet.)", "ok");
+      return;
+    }
+
+    button.disabled = true;
+    setStatus("Joining…", "");
+
+    // Plain XHR with form-urlencoded keeps this a "simple" request: Apps
+    // Script follows its redirect and returns a CORS-readable 200, so we can
+    // report real success/failure (fetch + no-cors returns an opaque 403).
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", WAITLIST_ENDPOINT);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState !== 4) return;
+      if (xhr.status === 200) {
+        form.reset();
+        setStatus("You're on the list — we'll be in touch.", "ok");
+      } else {
+        setStatus("Something went wrong. Please try again.", "error");
+      }
+      button.disabled = false;
+    };
+    xhr.send("email=" + encodeURIComponent(email) + "&source=landing");
+  });
+})();
