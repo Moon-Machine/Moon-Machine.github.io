@@ -359,6 +359,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
   color: var(--brand-500);
   text-align: center;
   cursor: text;
+  /* iOS Safari needs an explicit text selection mode to focus a
+     contenteditable host and raise the keyboard on tap. */
+  -webkit-user-select: text;
+  user-select: text;
   border-radius: var(--radius-400);
 }
 .est-count:focus-visible {
