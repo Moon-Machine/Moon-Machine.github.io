@@ -52,14 +52,17 @@
       layer.classList.toggle("is-active", layer.getAttribute("data-key") === key);
     });
 
-    // Swap the glass blurb.
+    // Swap the glass blurb. Cancel any in-flight swap so rapid taps can't race
+    // two timers and flash both blurbs at once; wait the full fade-out before
+    // changing text so the old copy is gone, not mid-fade, when the new appears.
     var text = row.getAttribute("data-blurb");
     if (text && blurb.textContent !== text) {
+      if (blurb._swap) window.clearTimeout(blurb._swap);
       blurb.style.opacity = "0";
-      window.setTimeout(function () {
+      blurb._swap = window.setTimeout(function () {
         blurb.textContent = text;
         blurb.style.opacity = "1";
-      }, 180);
+      }, 250);
     }
   }
 
