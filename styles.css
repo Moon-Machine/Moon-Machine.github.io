@@ -96,7 +96,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
   border-radius: var(--radius-full);
   overflow: hidden;
   display: block;
-  background: #0d0d0d;
+  background: #ffffff;
 }
 .logo img { width: 100%; height: 100%; }
 
@@ -185,7 +185,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .royalty-row__icon { flex: 0 0 32px; width: 32px; height: 32px; color: #595959; transition: color 0.3s var(--ease-out); }
 .royalty-row__icon svg { width: 100%; height: 100%; }
 .royalty-row__label { font-size: 20px; font-weight: 500; line-height: 1.2; }
-.royalty-row:hover { transform: translateX(2px); }
 .royalty-row.is-active {
   background: var(--row-tint, var(--brand-100));
   color: var(--row-color, var(--brand-500));
@@ -198,13 +197,28 @@ button { font: inherit; color: inherit; cursor: pointer; }
   flex: 0 0 483px;
   border-radius: var(--radius-400);
   overflow: hidden;
-  background: #1a1a1a url("assets/hero-chrome.jpg") center/cover no-repeat;
+  background: #1a1a1a;
   min-height: 702px;
 }
-.hero__media::after {
-  content: "";
+/* cross-fading background photos — one per royalty type */
+.hero-bg {
   position: absolute;
   inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-out);
+  will-change: opacity;
+}
+.hero-bg.is-active { opacity: 1; }
+.hero-bg[data-key="streaming"]   { background-image: url("assets/hero-streaming.jpg"); }
+.hero-bg[data-key="radio"]       { background-image: url("assets/hero-radio.jpg"); }
+.hero-bg[data-key="performance"] { background-image: url("assets/hero-performance.jpg"); }
+.hero-bg[data-key="mechanical"]  { background-image: url("assets/hero-mechanical.jpg"); }
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   background: linear-gradient(to bottom, rgba(102, 102, 102, 0) 20%, rgba(0, 0, 0, 0.85));
   pointer-events: none;
 }
@@ -213,26 +227,35 @@ button { font: inherit; color: inherit; cursor: pointer; }
   position: absolute;
   top: 46%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(2deg);
-  width: 312px;
-  height: 312px;
+  transform: translate(-50%, -50%);
+  width: 326px;
+  height: 326px;
   z-index: 2;
   filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.35));
 }
 .donut { width: 100%; height: 100%; }
 .donut__spin {
-  transform: rotate(var(--donut-rot, -10deg));
+  transform: rotate(calc(-90deg + var(--donut-rot, -10deg)));
   transform-origin: 100px 100px;
-  transition: transform 0.55s var(--ease-out);
+  transition: transform 0.6s var(--ease-out);
 }
+/* each slice is a filled wedge; the matching same-color round-join stroke
+   gives a subtle corner rounding without the fat "pill" look */
 .donut__seg {
-  fill: none;
-  stroke: rgba(231, 231, 231, 0.82);
-  stroke-width: 30;
+  fill: #e2e2e2;
+  stroke: #e2e2e2;
+  stroke-width: 6;
+  stroke-linejoin: round;
   stroke-linecap: round;
-  transition: stroke 0.35s var(--ease-out);
+  opacity: 0.8;
+  transition: fill 0.4s var(--ease-out), stroke 0.4s var(--ease-out), opacity 0.4s var(--ease-out);
 }
-.donut__seg--active { stroke: var(--donut-active, var(--brand-500)); }
+/* the active type's slice fills with its color */
+.donut__seg.is-on {
+  fill: var(--seg-color, var(--brand-500));
+  stroke: var(--seg-color, var(--brand-500));
+  opacity: 1;
+}
 
 /* glass blurb */
 .glass {
@@ -331,7 +354,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .fineprint {
   font-size: 12px;
   line-height: 1.5;
-  color: var(--text-tertiary);
+  color: #6e6e6e;
   max-width: 720px;
 }
 
