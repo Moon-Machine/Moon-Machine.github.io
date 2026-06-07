@@ -72,6 +72,159 @@
   activate(defaultRow);
 })();
 
+// Royalty estimator: a logarithmic Monthly Listeners slider drives a big
+// listener count and four royalty figures, all count-animated up/down.
+(function () {
+  "use strict";
+
+  var slider = document.getElementById("est-slider");
+  var countEl = document.getElementById("est-count");
+  if (!slider || !countEl) return;
+
+  var amounts = Array.prototype.slice.call(
+    document.querySelectorAll(".estimate-row__amount")
+  );
+
+  var L_MIN = 1000, L_MAX = 2000000;
+  var LN_MIN = Math.log(L_MIN), LN_SPAN = Math.log(L_MAX) - LN_MIN;
+  var MAX_POS = parseFloat(slider.max) || 1000;
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  var usd = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
+  var usdCents = new Intl.NumberFormat("en-US", {
+    style: "currency", currency: "USD", minimumFractionDigits: 2, maximumFractionDigits: 2
+  });
+
+  // log position (0..MAX_POS) → listeners, snapped to 3 significant figures
+  function posToListeners(pos) {
+    var raw = Math.exp(LN_MIN + (pos / MAX_POS) * LN_SPAN);
+    var mag = Math.pow(10, Math.floor(Math.log10(raw)) - 2);
+    return Math.max(L_MIN, Math.round(raw / mag) * mag);
+  }
+
+  function fmtCount(n) { return Math.round(n).toLocaleString("en-US"); }
+  function fmtMoney(n) { return n < 100 ? usdCents.format(n) : usd.format(Math.round(n)); }
+
+  // Each animated element tracks its own current value + frame handle so a new
+  // drag mid-tween simply retargets from where it is.
+  function animate(el, to, render) {
+    var from = el._cur != null ? el._cur : to;
+    if (el._raf) cancelAnimationFrame(el._raf);
+    if (reduce) { el._cur = to; el.textContent = render(to); return; }
+    var dur = 400, start = null;
+    function step(ts) {
+      if (start === null) start = ts;
+      var t = Math.min(1, (ts - start) / dur);
+      var eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+      var val = from + (to - from) * eased;
+      el._cur = val;
+      el.textContent = render(val);
+      if (t < 1) el._raf = requestAnimationFrame(step);
+    }
+    el._raf = requestAnimationFrame(step);
+  }
+
+  function setPct(pos) { slider.style.setProperty("--pct", (pos / MAX_POS) * 100 + "%"); }
+
+  function updateAmounts(listeners) {
+    amounts.forEach(function (el) {
+      var rate = parseFloat(el.getAttribute("data-rate")) || 0;
+      animate(el, listeners * rate, fmtMoney);
+    });
+  }
+
+  function listenersToPos(listeners) {
+    return (Math.log(listeners) - LN_MIN) / LN_SPAN * MAX_POS;
+  }
+
+  function parseTyped() {
+    var n = parseInt((countEl.textContent || "").replace(/[^\d]/g, ""), 10);
+    return isNaN(n) ? null : Math.min(L_MAX, Math.max(L_MIN, n));
+  }
+
+  // Count digits before the caret (commas ignored), so we can restore the
+  // caret to the same logical spot after reformatting.
+  function caretDigits() {
+    var sel = window.getSelection();
+    if (!sel.rangeCount) return null;
+    var r = sel.getRangeAt(0).cloneRange();
+    var pre = document.createRange();
+    pre.selectNodeContents(countEl);
+    pre.setEnd(r.endContainer, r.endOffset);
+    return (pre.toString().match(/\d/g) || []).length;
+  }
+  function setCaretAfterDigits(n) {
+    var node = countEl.firstChild;
+    if (!node) return;
+    var text = node.textContent, count = 0, pos = text.length;
+    if (n <= 0) pos = 0;
+    else for (var i = 0; i < text.length; i++) {
+      if (text.charCodeAt(i) >= 48 && text.charCodeAt(i) <= 57 && ++count === n) { pos = i + 1; break; }
+    }
+    var r = document.createRange();
+    r.setStart(node, Math.min(pos, text.length));
+    r.collapse(true);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+  }
+
+  // Slider drives the count (1:1, no tween) and the animated amounts.
+  function fromSlider() {
+    var pos = parseFloat(slider.value);
+    var listeners = posToListeners(pos);
+    setPct(pos);
+    if (document.activeElement !== countEl) countEl.textContent = fmtCount(listeners);
+    updateAmounts(listeners);
+  }
+
+  // Typing in the count reformats with commas live (caret preserved), and moves
+  // the slider + amounts. Min isn't enforced until blur so partial entries work.
+  function fromTyped() {
+    var digits = (countEl.textContent || "").replace(/[^\d]/g, "");
+    var n = parseInt(digits, 10);
+    if (!isNaN(n) && n > L_MAX) n = L_MAX;
+
+    var formatted = isNaN(n) ? "" : n.toLocaleString("en-US");
+    if (countEl.textContent !== formatted) {
+      var di = caretDigits();
+      countEl.textContent = formatted;
+      if (di !== null) setCaretAfterDigits(di);
+    }
+    if (isNaN(n)) return;
+
+    var pos = listenersToPos(Math.max(1, n));
+    slider.value = pos;
+    setPct(pos);
+    updateAmounts(n);
+  }
+
+  slider.addEventListener("input", fromSlider);
+  countEl.addEventListener("input", fromTyped);
+  countEl.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); countEl.blur(); }
+  });
+  countEl.addEventListener("focus", function () {
+    // select all so a fresh number replaces the current one
+    var r = document.createRange();
+    r.selectNodeContents(countEl);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(r);
+  });
+  countEl.addEventListener("blur", function () {
+    var listeners = parseTyped();
+    if (listeners === null) listeners = posToListeners(parseFloat(slider.value));
+    countEl.textContent = fmtCount(listeners); // reformat with commas, clamped
+    var pos = listenersToPos(listeners);
+    slider.value = pos;
+    setPct(pos);
+    updateAmounts(listeners);
+  });
+
+  fromSlider();
+})();
+
 // Waitlist signup → Google Apps Script web app (appends to a Google Sheet).
 // Paste the deployed web-app URL between the quotes below.
 var WAITLIST_ENDPOINT = "https://script.google.com/macros/s/AKfycbwPXaAlWNYMLcSE2u-B-xljxBWc9QZsTb_mWHidOZv7pxmQAtXlIfZM33hXozgYfOxj/exec";
