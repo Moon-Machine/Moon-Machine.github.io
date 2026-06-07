@@ -520,7 +520,7 @@ html.fonts-loading .reveal { animation-play-state: paused; }
   .hero, .estimator { padding: var(--space-400); }
   .royalty-row__label, .estimate-row__label { font-size: 17px; }
   .estimate-row { flex-wrap: wrap; }
-  .estimate-row__amount { font-size: 20px; }
+  .estimate-row__amount { font-size: 20px; flex-basis: 100%; text-align: right; }
   .hero__media-wrap { min-height: 420px; flex-direction: column; }
   .glass { right: var(--space-400); }
   .chart-cta { position: static; margin: var(--space-400); align-self: flex-start; }
