@@ -388,26 +388,38 @@ button { font: inherit; color: inherit; cursor: pointer; }
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
+  /* Tall transparent input = wide finger hit area; the visible 8px track is
+     painted on the ::track pseudo-elements so the thumb stays centered. */
+  height: 36px;
+  background: transparent;
+  touch-action: none;
+  cursor: pointer;
+}
+.est-slider::-webkit-slider-runnable-track {
   height: 8px;
-  /* Transparent vertical padding widens the finger hit area without
-     thickening the visible 8px track (gradient clipped to content box). */
-  padding: 14px 0;
-  background-clip: content-box;
   border-radius: var(--radius-full);
   background-image: linear-gradient(
     to right,
     var(--brand-500) 0 var(--pct, 23%),
     var(--brand-200) var(--pct, 23%) 100%
   );
-  background-color: transparent;
-  touch-action: none;
-  cursor: pointer;
+}
+.est-slider::-moz-range-track {
+  height: 8px;
+  border-radius: var(--radius-full);
+  background-image: linear-gradient(
+    to right,
+    var(--brand-500) 0 var(--pct, 23%),
+    var(--brand-200) var(--pct, 23%) 100%
+  );
 }
 .est-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 28px;
   height: 28px;
+  /* center the 28px thumb on the 8px track: (8 - 28) / 2 */
+  margin-top: -10px;
   border-radius: var(--radius-full);
   background: var(--brand-500);
   border: none;
