@@ -18,34 +18,6 @@
   var bgLayers = media ? Array.prototype.slice.call(media.querySelectorAll(".hero-bg")) : [];
   var segs = Array.prototype.slice.call(donut.querySelectorAll(".donut__seg"));
 
-  // --- Donut geometry -------------------------------------------------------
-  // Four fixed wedges (angles measured clockwise from 3 o'clock; the group's
-  // -90deg base rotation puts 0deg at the top). Each type owns one wedge.
-  var CX = 100, CY = 100, R_OUT = 90, R_IN = 54;
-  var SLICES = {
-    streaming:   [0, 130],
-    radio:       [139, 195],
-    performance: [204, 270],
-    mechanical:  [279, 351]
-  };
-  function polar(r, deg) {
-    var a = deg * Math.PI / 180;
-    return [CX + r * Math.cos(a), CY + r * Math.sin(a)];
-  }
-  function wedge(a0, a1) {
-    var o0 = polar(R_OUT, a0), o1 = polar(R_OUT, a1);
-    var i1 = polar(R_IN, a1), i0 = polar(R_IN, a0);
-    var large = (a1 - a0) > 180 ? 1 : 0;
-    return "M" + o0[0].toFixed(2) + " " + o0[1].toFixed(2) +
-      "A" + R_OUT + " " + R_OUT + " 0 " + large + " 1 " + o1[0].toFixed(2) + " " + o1[1].toFixed(2) +
-      "L" + i1[0].toFixed(2) + " " + i1[1].toFixed(2) +
-      "A" + R_IN + " " + R_IN + " 0 " + large + " 0 " + i0[0].toFixed(2) + " " + i0[1].toFixed(2) + "Z";
-  }
-  segs.forEach(function (seg) {
-    var slice = SLICES[seg.getAttribute("data-type")];
-    if (slice) seg.setAttribute("d", wedge(slice[0], slice[1]));
-  });
-
   // Accumulated rotation in degrees, so we can always take the shortest path.
   var currentRot = parseFloat(defaultRow.getAttribute("data-rot")) || 0;
 

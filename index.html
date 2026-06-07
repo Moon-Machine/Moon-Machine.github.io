@@ -51,7 +51,7 @@
         <ul class="royalty-list" id="royalty-list">
           <li>
             <button class="royalty-row is-active" type="button"
-              data-bg="streaming" data-color="#ff582a" data-tint="#ffe9e3" data-rot="-10"
+              data-bg="streaming" data-color="#ff582a" data-tint="#ffe9e3" data-rot="0"
               data-blurb="Earned when your music is streamed on platforms like Spotify and Apple Music. Moon Machine distributes your music and collects the resulting royalties.">
               <span class="royalty-row__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
@@ -71,7 +71,7 @@
           </li>
           <li>
             <button class="royalty-row" type="button"
-              data-bg="performance" data-color="#3f81ea" data-tint="#f1f6fd" data-rot="-214"
+              data-bg="performance" data-color="#3f81ea" data-tint="#f1f6fd" data-rot="-215"
               data-blurb="Paid when your music is performed on radio, TV, live venues, and streaming services. Collected through organizations like ASCAP and BMI.">
               <span class="royalty-row__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
@@ -81,7 +81,7 @@
           </li>
           <li>
             <button class="royalty-row" type="button"
-              data-bg="mechanical" data-color="#14ae5c" data-tint="#ebffee" data-rot="-289"
+              data-bg="mechanical" data-color="#14ae5c" data-tint="#ebffee" data-rot="-280"
               data-blurb="Generated when your songs are reproduced on digital platforms. In the United States these royalties are collected through The Mechanical Licensing Collective.">
               <span class="royalty-row__icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none"/></svg>
@@ -101,12 +101,12 @@
         <div class="hero__scrim" aria-hidden="true"></div>
 
         <div class="chart-wrap">
-          <svg class="donut" id="donut" viewBox="0 0 200 200" role="img" aria-label="Royalty breakdown chart">
+          <svg class="donut" id="donut" viewBox="0 0 403.571 403.571" role="img" aria-label="Royalty breakdown chart">
             <g class="donut__spin" id="donut-spin">
-              <path class="donut__seg" data-type="streaming" />
-              <path class="donut__seg" data-type="radio" />
-              <path class="donut__seg" data-type="performance" />
-              <path class="donut__seg" data-type="mechanical" />
+              <path class="donut__seg" data-type="streaming" d="M201.786 67.3071C201.786 61.4433 206.546 56.6493 212.394 57.078C239.525 59.0665 265.629 68.6517 287.67 84.8379C312.571 103.125 330.985 128.883 340.231 158.361C349.478 187.84 349.073 219.5 339.077 248.733C330.229 274.607 314.275 297.385 293.141 314.512C288.585 318.204 281.939 316.987 278.59 312.174L257.571 281.963C254.222 277.15 255.461 270.578 259.832 266.668C270.91 256.757 279.313 244.13 284.16 229.954C290.158 212.414 290.401 193.418 284.853 175.731C279.305 158.044 268.257 142.589 253.316 131.617C241.24 122.749 227.131 117.183 212.377 115.375C206.557 114.661 201.786 109.975 201.786 104.111L201.786 67.3071Z" />
+              <path class="donut__seg" data-type="radio" d="M270.332 317.483C273.321 322.528 271.67 329.079 266.42 331.691C246.457 341.623 224.428 346.843 202.035 346.882C179.643 346.92 157.596 341.776 137.599 331.913C132.34 329.319 130.666 322.774 133.638 317.718L152.288 285.99C155.26 280.935 161.748 279.313 167.127 281.647C178.077 286.399 189.923 288.864 201.935 288.843C213.948 288.823 225.786 286.317 236.719 281.527C242.09 279.174 248.584 280.775 251.573 285.819L270.332 317.483Z" />
+              <path class="donut__seg" data-type="performance" d="M125.542 312.562C122.218 317.393 115.578 318.643 111.004 314.974C93.626 301.036 79.6513 283.251 70.2183 262.965C60.7852 242.679 56.1911 220.532 56.7323 198.262C56.8747 192.4 62.1092 188.129 67.9451 188.699L104.574 192.281C110.41 192.851 114.61 198.056 114.754 203.918C115.046 215.839 117.785 227.612 122.845 238.493C127.905 249.375 135.142 259.056 144.07 266.962C148.46 270.849 149.733 277.415 146.408 282.245L125.542 312.562Z" />
+              <path class="donut__seg" data-type="mechanical" d="M69.1778 179.433C63.3955 178.458 59.4595 172.967 60.8542 167.272C67.6744 139.42 82.6203 114.128 103.904 94.6778C125.188 75.2273 151.72 62.6139 180.072 58.3232C185.869 57.4457 190.985 61.8591 191.436 67.7055L194.269 104.4C194.72 110.247 190.324 115.287 184.575 116.446C169.144 119.558 154.775 126.812 143.057 137.521C131.339 148.229 122.823 161.889 118.337 176.978C116.666 182.599 111.252 186.525 105.47 185.55L69.1778 179.433Z" />
             </g>
           </svg>
         </div>
@@ -115,10 +115,12 @@
           <p class="glass__text" id="hero-blurb">Earned when your music is streamed on platforms like Spotify and Apple Music. Moon Machine distributes your music and collects the resulting royalties.</p>
         </div>
 
-        <a class="btn btn-brand chart-cta" href="#early-access">
-          Stay in the loop
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>
-        </a>
+        <div class="chart-cta">
+          <a class="btn btn-brand btn-lg" href="#early-access">
+            Stay in the loop
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><polyline points="15 10 20 15 15 20"/><path d="M4 4v7a4 4 0 0 0 4 4h12"/></svg>
+          </a>
+        </div>
       </div>
     </section>
 
