@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200, initial-scale=1" />
+  <title>Moon Machine — OG card</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,700;1,700&family=Raleway:wght@500;600;700&display=swap"
+    rel="stylesheet" />
+
+  <style>
+    /* Mirrors the site's tokens — kept self-contained so the card renders
+       identically when screenshotted, independent of styles.css. */
+    :root {
+      --brand-500: #ff582a;
+      --brand-600: #df3f00;
+      --cream: #ffe9e3;
+      --font-body: "Raleway", system-ui, sans-serif;
+      --font-display: "Libre Baskerville", Georgia, serif;
+    }
+    * { box-sizing: border-box; margin: 0; }
+
+    html, body { width: 1200px; height: 630px; }
+    body {
+      font-family: var(--font-body);
+      color: #fff;
+      background: var(--brand-500);
+      background-image:
+        radial-gradient(130% 150% at 100% 0%, var(--brand-600) 0%, transparent 55%),
+        radial-gradient(90% 120% at 0% 100%, rgba(255, 255, 255, 0.10) 0%, transparent 50%);
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    .card {
+      width: 100%;
+      height: 100%;
+      padding: 72px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* top: wordmark */
+    .brand { display: flex; align-items: center; gap: 18px; }
+    .brand__logo {
+      width: 56px; height: 56px;
+      border-radius: 9999px;
+      background: #fff;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .brand__logo img { width: 56px; height: 56px; display: block; }
+    .brand__name { font-size: 28px; font-weight: 700; letter-spacing: -0.3px; }
+
+    /* middle: the statement */
+    .body { display: flex; flex-direction: column; gap: 26px; }
+    .eyebrow {
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0.92;
+    }
+    .headline {
+      font-weight: 500;
+      font-size: 76px;
+      line-height: 1.04;
+      letter-spacing: -2px;
+      max-width: 17ch;
+    }
+    .headline em {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* bottom: url + tag */
+    .foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    .foot__url { letter-spacing: 0.01em; }
+    .foot__tag {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 700;
+      color: var(--cream);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="card">
+    <div class="brand">
+      <span class="brand__logo"><img src="logo.svg" alt="" width="56" height="56" /></span>
+      <span class="brand__name">Moon Machine</span>
+    </div>
+
+    <div class="body">
+      <p class="eyebrow">Global royalty collection for independent artists</p>
+      <h1 class="headline">Your music is earning money you've <em>never seen.</em></h1>
+    </div>
+
+    <div class="foot">
+      <span class="foot__url">moonmachine.co</span>
+      <span class="foot__tag">We're going to get it.</span>
+    </div>
+  </div>
+</body>
+
+</html>
