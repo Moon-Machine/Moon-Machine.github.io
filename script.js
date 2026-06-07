@@ -61,6 +61,9 @@
       blurb.style.opacity = "0";
       blurb._swap = window.setTimeout(function () {
         blurb.textContent = text;
+        // Force a synchronous reflow so iOS Safari repaints the new text
+        // instead of fading in over a stale snapshot of the old copy.
+        void blurb.offsetHeight;
         blurb.style.opacity = "1";
       }, 250);
     }

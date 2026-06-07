@@ -105,7 +105,6 @@ body {
   background-image:
     radial-gradient(1200px 600px at 80% -10%, var(--wash-brand), transparent 60%),
     radial-gradient(900px 500px at -10% 110%, var(--wash-blue), transparent 60%);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -352,6 +351,10 @@ button { font: inherit; color: inherit; cursor: pointer; }
   line-height: 1.4;
   color: var(--text-on-neutral);
   transition: opacity 0.25s var(--ease-out);
+  /* Own compositing layer so iOS Safari invalidates this text instead of
+     compositing a stale snapshot of the old copy over the new one. */
+  transform: translateZ(0);
+  will-change: opacity;
 }
 
 /* the button sits in a white tab carved into the bottom-right corner */
