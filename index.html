@@ -22,6 +22,32 @@
   <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400;1,700&family=Raleway:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600;1,700&display=swap" rel="stylesheet" />
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Hold the content reveal until webfonts are ready, so text never flashes a
+       fallback then swaps. Runs before first paint; releases on a safety timeout. -->
+  <script>
+    (function () {
+      var root = document.documentElement;
+      root.classList.add("fonts-loading");
+      function reveal() { root.classList.remove("fonts-loading"); }
+      if (document.fonts && document.fonts.load) {
+        // Explicitly trigger the above-the-fold faces and wait for them to
+        // decode. (document.fonts.ready alone resolves early here, since no
+        // element has requested a font yet when this runs in <head>.)
+        var loads = [
+          document.fonts.load('400 1em "Raleway"'),
+          document.fonts.load('500 1em "Raleway"'),
+          document.fonts.load('italic 700 1em "Libre Baskerville"')
+        ];
+        Promise.race([
+          Promise.all(loads),
+          new Promise(function (r) { setTimeout(r, 2500); })
+        ]).then(reveal);
+      } else {
+        reveal();
+      }
+    })();
+  </script>
 </head>
 <body>
   <div class="page">

@@ -482,6 +482,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
   transform: translateY(16px);
   animation: reveal 0.7s var(--ease-out) forwards;
 }
+/* Hold the load reveal until webfonts are ready, so text never paints in a
+   fallback and swaps. Released by the inline script in <head> (or its timeout). */
+html.fonts-loading .reveal { animation-play-state: paused; }
 .site-header { animation-delay: 0.02s; }
 .hero { animation-delay: 0.1s; }
 .estimator { animation-delay: 0.2s; }
