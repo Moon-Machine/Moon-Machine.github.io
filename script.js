@@ -280,3 +280,41 @@ var WAITLIST_ENDPOINT = "https://script.google.com/macros/s/AKfycbwPXaAlWNYMLcSE
     xhr.send("email=" + encodeURIComponent(email) + "&source=landing");
   });
 })();
+
+// Theme toggle. Default follows the OS (prefers-color-scheme); a click stores an
+// explicit choice in localStorage and pins it via <html data-theme>. The saved
+// value is applied pre-paint by the inline script in <head>.
+(function () {
+  "use strict";
+
+  var root = document.documentElement;
+  var btn = document.querySelector(".theme-toggle");
+  if (!btn) return;
+
+  var media = window.matchMedia("(prefers-color-scheme: dark)");
+
+  function effectiveDark() {
+    var pinned = root.dataset.theme;
+    if (pinned === "dark") return true;
+    if (pinned === "light") return false;
+    return media.matches;
+  }
+
+  function syncAria() {
+    btn.setAttribute("aria-pressed", effectiveDark() ? "true" : "false");
+  }
+
+  btn.addEventListener("click", function () {
+    var next = effectiveDark() ? "light" : "dark";
+    root.dataset.theme = next;
+    try { localStorage.setItem("mm-theme", next); } catch (e) {}
+    syncAria();
+  });
+
+  // Keep aria in sync with the OS while following it (no saved choice).
+  media.addEventListener("change", function () {
+    if (!root.dataset.theme) syncAria();
+  });
+
+  syncAria();
+})();
